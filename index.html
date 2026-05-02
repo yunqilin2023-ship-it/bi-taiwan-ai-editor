@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BI Taiwan｜總編工作台 2.0</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --panel:#ffffff;
+      --panel-soft:rgba(255,255,255,.82);
+      --text:#162033;
+      --muted:#667085;
+      --line:#e8edf5;
+      --brand:#1d4ed8;
+      --brand-2:#7c3aed;
+      --brand-soft:#eef4ff;
+      --ok:#067647;
+      --ok-soft:#ecfdf3;
+      --warn:#b54708;
+      --warn-soft:#fff7ed;
+      --danger:#b42318;
+      --danger-soft:#fff1f3;
+      --shadow:0 18px 50px rgba(17, 24, 39, .08);
+      --radius:24px;
+      --dark:#0f172a;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(29,78,216,.10), transparent 22%),
+        radial-gradient(circle at top right, rgba(124,58,237,.10), transparent 18%),
+        linear-gradient(180deg, #f8fbff 0%, #f4f7fb 100%);
+      min-height:100vh;
+    }
+    .page{max-width:1640px;margin:0 auto;padding:22px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      padding:26px 28px 22px;
+      border-radius:28px;
+      background:linear-gradient(135deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+      border:1px solid rgba(255,255,255,.76);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
+      margin-bottom:20px;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;
+      background:radial-gradient(circle, rgba(29,78,216,.16), transparent 64%);
+      pointer-events:none;
+    }
+    .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 14px;border-radius:999px;background:var(--brand-soft);
+      color:var(--brand);font-size:13px;font-weight:800;margin-bottom:12px;
+    }
+    .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--brand-2))}
+    h1{margin:0;font-size:clamp(28px,4vw,44px);letter-spacing:-.03em;line-height:1.08}
+    .hero p{margin:12px 0 0;color:var(--muted);font-size:15px;line-height:1.8;max-width:940px}
+    .hero-metrics{display:flex;gap:10px;flex-wrap:wrap}
+    .metric{
+      min-width:150px;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid var(--line);
+      box-shadow:0 6px 18px rgba(15,23,42,.04)
+    }
+    .metric .k{font-size:12px;color:var(--muted);margin-bottom:7px}
+    .metric .v{font-size:18px;font-weight:800}
+    .workflow{
+      display:flex;gap:10px;flex-wrap:wrap;margin-top:18px
+    }
+    .step{
+      display:inline-flex;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;
+      background:rgba(255,255,255,.86);border:1px solid var(--line);font-size:13px;font-weight:700;color:#344054;
+    }
+    .step i{
+      width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+      font-style:normal;font-size:11px;background:var(--brand-soft);color:var(--brand)
+    }
+
+    .main{
+      display:grid;
+      grid-template-columns: 390px 390px 1fr;
+      gap:18px;
+      align-items:start;
+    }
+    .card{
+      border-radius:var(--radius);
+      background:var(--panel-soft);
+      border:1px solid rgba(255,255,255,.82);
+      backdrop-filter: blur(12px);
+      box-shadow:var(--shadow);
+    }
+    .panel{padding:20px}
+    .sticky{position:sticky;top:18px}
+    .head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:16px}
+    .title{margin:0;font-size:24px;letter-spacing:-.02em}
+    .sub{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.7}
+    .field{margin-bottom:14px}
+    label{display:block;font-size:14px;font-weight:800;color:#253041;margin-bottom:8px}
+    .required:after{content:" *";color:#d92d20}
+    input,textarea,select{
+      width:100%;padding:13px 14px;border-radius:16px;border:1px solid var(--line);
+      background:rgba(255,255,255,.95);color:var(--text);font-size:15px;outline:none;transition:.18s ease;
+      font-family:inherit;
+    }
+    input:focus,textarea:focus,select:focus{
+      border-color:rgba(29,78,216,.42);
+      box-shadow:0 0 0 4px rgba(29,78,216,.10);
+      background:#fff;
+    }
+    textarea{min-height:104px;line-height:1.7;resize:vertical}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .help{margin-top:7px;color:var(--muted);font-size:12px;line-height:1.6}
+    .btn{
+      border:none;cursor:pointer;border-radius:16px;padding:13px 16px;font-size:15px;font-weight:800;transition:.18s ease
+    }
+    .btn-primary{
+      width:100%;color:#fff;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2));
+      box-shadow:0 12px 24px rgba(29,78,216,.24);
+    }
+    .btn-primary:hover,.btn-ghost:hover{transform:translateY(-1px)}
+    .btn-ghost{background:#fff;border:1px solid var(--line);color:var(--text)}
+    .input-note{
+      margin-top:14px;padding:14px 16px;border-radius:18px;
+      background:rgba(29,78,216,.05);border:1px dashed rgba(29,78,216,.18);color:#516074;font-size:12.5px;line-height:1.8
+    }
+
+    .summary-header{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px
+    }
+    .status-pill{
+      display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;
+      background:#fff;border:1px solid var(--line);font-size:12px;font-weight:800;color:#344054
+    }
+    .pulse{
+      width:8px;height:8px;border-radius:50%;background:#12b76a;box-shadow:0 0 0 0 rgba(18,183,106,.45);
+      animation:pulse 1.9s infinite
+    }
+    @keyframes pulse{
+      0%{box-shadow:0 0 0 0 rgba(18,183,106,.45)}
+      70%{box-shadow:0 0 0 10px rgba(18,183,106,0)}
+      100%{box-shadow:0 0 0 0 rgba(18,183,106,0)}
+    }
+    .agent-list{display:flex;flex-direction:column;gap:12px}
+    .agent{
+      border:1px solid var(--line);background:rgba(255,255,255,.96);border-radius:20px;padding:14px 14px 12px
+    }
+    .agent-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .agent-name{display:flex;align-items:center;gap:10px;font-weight:800}
+    .agent-icon{
+      width:34px;height:34px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;
+      font-size:16px;background:var(--brand-soft);color:var(--brand)
+    }
+    .agent-badge{
+      padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;border:1px solid var(--line);background:#fff;color:#475467
+    }
+    .agent-badge.done{background:var(--ok-soft);color:var(--ok);border-color:#abefc6}
+    .agent-badge.running{background:var(--warn-soft);color:var(--warn);border-color:#fedf89}
+    .agent-badge.waiting{background:#f8fafc;color:#667085;border-color:#e4e7ec}
+    .agent-body{
+      min-height:88px;border-radius:16px;padding:12px 12px;background:#fbfcfe;border:1px dashed #e4e8f0;
+      color:#475467;font-size:13px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere
+    }
+    .agent-tip{
+      margin-top:12px;font-size:12px;color:var(--muted);line-height:1.7
+    }
+
+    .result-toolbar{display:flex;gap:10px;flex-wrap:wrap}
+    .error{
+      display:none;margin-bottom:14px;padding:14px 16px;border-radius:18px;background:var(--danger-soft);
+      border:1px solid #fda29b;color:var(--danger);font-size:14px;line-height:1.7
+    }
+    .result-wrap{
+      overflow:hidden;border-radius:22px;border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.94));
+      min-height:860px
+    }
+    .result-top{
+      padding:14px 18px;border-bottom:1px solid var(--line);
+      display:flex;justify-content:space-between;gap:10px;align-items:center;
+      background:linear-gradient(180deg, rgba(29,78,216,.04), rgba(29,78,216,0))
+    }
+    .result-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .badge{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      background:var(--brand-soft);color:var(--brand);font-size:12px;font-weight:800
+    }
+    .badge i{width:7px;height:7px;border-radius:50%;background:var(--brand);font-style:normal}
+    .result{
+      padding:28px 30px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.95;font-size:17px;min-height:790px
+    }
+    .placeholder{
+      min-height:790px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;
+      color:#98a2b3;text-align:center;padding:28px
+    }
+    .placeholder strong{font-size:22px;color:#667085}
+    .footnote{margin-top:12px;font-size:12px;color:var(--muted);line-height:1.8}
+
+    @media (max-width: 1380px){
+      .main{grid-template-columns: 1fr}
+      .sticky{position:relative;top:0}
+    }
+    @media (max-width: 820px){
+      .page{padding:16px}
+      .hero{padding:20px}
+      .two{grid-template-columns:1fr}
+      .hero-top,.head,.result-top{flex-direction:column;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> BI Taiwan｜總編工作台 2.0</div>
+          <h1>編輯會議</h1>
+          <p>把選題資料送進 Make 後，工作台會顯示 AI 編輯會議流程。左欄輸入選題，中欄查看 OpenAI、Claude、Gemini、財經分析師與散戶視角的討論摘要，右欄直接看總編輯定稿。</p>
+        </div>
+        <div class="hero-metrics">
+          <div class="metric"><div class="k">工作模式</div><div class="v">總編工作台</div></div>
+          <div class="metric"><div class="k">核心流程</div><div class="v">6 角色協作</div></div>
+          <div class="metric"><div class="k">輸出目標</div><div class="v">60秒定稿</div></div>
+        </div>
+      </div>
+
+      <div class="workflow">
+        <span class="step"><i>1</i> 輸入選題</span>
+        <span class="step"><i>2</i> OpenAI 初稿</span>
+        <span class="step"><i>3</i> Claude 審稿</span>
+        <span class="step"><i>4</i> Gemini 流量判斷</span>
+        <span class="step"><i>5</i> 財經分析師</span>
+        <span class="step"><i>6</i> 散戶視角</span>
+        <span class="step"><i>7</i> 總編輯定稿</span>
+      </div>
+    </section>
+
+    <section class="main">
+      <form class="card panel sticky" id="form">
+        <div class="head">
+          <div>
+            <h2 class="title">選題輸入</h2>
+            <div class="sub">設定本次腳本任務的題目、方向與條件。</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="required" for="webhook">Make Webhook URL</label>
+          <input id="webhook" placeholder="貼上 https://hook...make.com/..." required />
+          <div class="help">這是 Make 的資料入口，不是網頁網址，請勿對外公開。</div>
+        </div>
+
+        <div class="field">
+          <label class="required" for="topic">議題名稱</label>
+          <input id="topic" placeholder="例如：AI 燒錢大戰誰勝出？科技巨頭財報總體檢" required />
+        </div>
+
+        <div class="field">
+          <label class="required" for="angle">議題方向</label>
+          <textarea id="angle" placeholder="請清楚寫出：市場事件 + 關鍵問題 + 你的判斷。例如：科技巨頭財報後，市場開始區分誰能把 AI 投資轉成實際營收，誰還停留在高資本支出階段。" required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="links">參考連結</label>
+          <textarea id="links" placeholder="每行一個連結，或補充新聞、財報、社群貼文摘要"></textarea>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label for="platform">目標平台</label>
+            <select id="platform">
+              <option>全平台</option>
+              <option>YouTube Shorts</option>
+              <option>Facebook Reels</option>
+              <option>Instagram Reels</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="videoType">影片定位</label>
+            <select id="videoType">
+              <option>市場解讀</option>
+              <option>財經情報</option>
+              <option>產業趨勢</option>
+              <option>國際新聞</option>
+              <option>投資教育</option>
+              <option>職場商業</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field">
+            <label for="tone">口吻</label>
+            <select id="tone">
+              <option>BI情報式</option>
+              <option>總編咖啡時間</option>
+              <option>快節奏流量版</option>
+              <option>專業解釋版</option>
+              <option>犀利評論版</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="factCheck">查證需求</label>
+            <select id="factCheck">
+              <option>高</option>
+              <option>中</option>
+              <option>低</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="notes">備註</label>
+          <textarea id="notes" placeholder="例如：避免投資建議、前5秒要強、受眾以年輕投資人為主"></textarea>
+        </div>
+
+        <button class="btn btn-primary" id="submitBtn" type="submit">啟動 AI 編輯會議</button>
+
+        <div class="input-note">
+          <strong>輸入建議</strong><br>
+          1. 財經題目請盡量補公司、產業、政策、數字或市場反應。<br>
+          2. 若要中欄摘要更有內容，後續可在 Make 的 Webhook Response 一起回傳各角色欄位。<br>
+          3. 最終稿若要最好讀，請在最後總編輯 Prompt 明確要求輸出 Markdown 純文字。
+        </div>
+      </form>
+
+      <section class="card panel sticky">
+        <div class="summary-header">
+          <div>
+            <h2 class="title">AI 討論摘要</h2>
+            <div class="sub">如果 Make Response 有回傳各角色欄位，這裡會同步顯示。</div>
+          </div>
+          <span class="status-pill"><span class="pulse"></span> 討論室待命中</span>
+        </div>
+
+        <div class="agent-list">
+          <div class="agent">
+            <div class="agent-top">
+              <div class="agent-name"><span class="agent-icon">✍️</span> OpenAI 初稿</div>
+              <span class="agent-badge waiting" id="status-draft">待命</span>
+            </div>
+            <div class="agent-body" id="agent-draft">尚未收到摘要。若你希望這裡顯示初稿重點，請在 Webhook Response 加上 draft_summary 欄位。</div>
+          </div>
+
+          <div class="agent">
+            <div class="agent-top">
+              <div class="agent-name"><span class="agent-icon">🛡️</span> Claude 審稿</div>
+              <span class="agent-badge waiting" id="status-claude">待命</span>
+            </div>
+            <div class="agent-body" id="agent-claude">尚未收到摘要。可在 Make 回傳 claude_review 欄位，顯示查核與風險提醒。</div>
+          </div>
+
+          <div class="agent">
+            <div class="agent-top">
+              <div class="agent-name"><span class="agent-icon">📈</span> Gemini 流量判斷</div>
+              <span class="agent-badge waiting" id="status-gemini">待命</span>
+            </div>
+            <div class="agent-body" id="agent-gemini">尚未收到摘要。可回傳 gemini_judgment 欄位，顯示流量潛力與標題判斷。</div>
+          </div>
+
+          <div class="agent">
+            <div class="agent-top">
+              <div class="agent-name"><span class="agent-icon">💹</span> 財經分析師</div>
+              <span class="agent-badge waiting" id="status-analyst">待命</span>
+            </div>
+            <div class="agent-body" id="agent-analyst">尚未收到摘要。可回傳 analyst_view 欄位，顯示市場邏輯與因果鏈檢查。</div>
+          </div>
+
+          <div class="agent">
+            <div class="agent-top">
+              <div class="agent-name"><span class="agent-icon">🧑‍💼</span> 散戶投資人</div>
+              <span class="agent-badge waiting" id="status-retail">待命</span>
+            </div>
+            <div class="agent-body" id="agent-retail">尚未收到摘要。可回傳 retail_view 欄位，顯示觀眾理解門檻與關注點。</div>
+          </div>
+
+          <div class="agent-tip">
+            <strong>進階版建議：</strong>若你想讓中欄真的有內容，請把 Make 最後的 Webhook Response 改成回傳多個欄位，例如：
+            <br><code>{
+  "final_script":"...",
+  "draft_summary":"...",
+  "claude_review":"...",
+  "gemini_judgment":"...",
+  "analyst_view":"...",
+  "retail_view":"..."
+}</code>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel">
+        <div class="head">
+          <div>
+            <h2 class="title">總編輯定稿</h2>
+            <div class="sub">右欄顯示最終定稿，可直接閱讀、複製、再微調。</div>
+          </div>
+          <div class="result-toolbar">
+            <button class="btn btn-ghost" type="button" id="copyBtn">複製全文</button>
+            <button class="btn btn-ghost" type="button" id="clearBtn">清空</button>
+          </div>
+        </div>
+
+        <div id="error" class="error"></div>
+
+        <div class="result-wrap">
+          <div class="result-top">
+            <div class="result-meta">
+              <span class="badge"><i></i> 可直接錄製</span>
+              <span class="badge"><i></i> Markdown 純文字最佳</span>
+            </div>
+            <div class="sub">建議先看「是否值得拍」與「前5秒 Hook」。</div>
+          </div>
+          <div class="result" id="output">
+            <div class="placeholder">
+              <strong>還沒有定稿</strong>
+              <span>左邊輸入題目並送出後，右邊會顯示總編輯最終版本。</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footnote">
+          如果畫面出現 500 錯誤，通常代表 Make 裡某顆模組出錯；如果內容被 JSON 包兩層，請調整最後 Webhook Response 的 Body。
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('form');
+    const output = document.getElementById('output');
+    const errorBox = document.getElementById('error');
+    const submitBtn = document.getElementById('submitBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const clearBtn = document.getElementById('clearBtn');
+
+    const agents = {
+      draft: { body: document.getElementById('agent-draft'), badge: document.getElementById('status-draft') },
+      claude: { body: document.getElementById('agent-claude'), badge: document.getElementById('status-claude') },
+      gemini: { body: document.getElementById('agent-gemini'), badge: document.getElementById('status-gemini') },
+      analyst: { body: document.getElementById('agent-analyst'), badge: document.getElementById('status-analyst') },
+      retail: { body: document.getElementById('agent-retail'), badge: document.getElementById('status-retail') }
+    };
+
+    function showError(msg){
+      errorBox.style.display = 'block';
+      errorBox.textContent = msg;
+    }
+    function clearError(){
+      errorBox.style.display = 'none';
+      errorBox.textContent = '';
+    }
+    function setOutput(text){
+      output.textContent = text;
+    }
+    function setAgentState(key, status, text){
+      if(!agents[key]) return;
+      const badge = agents[key].badge;
+      badge.className = 'agent-badge ' + status;
+      badge.textContent = status === 'done' ? '完成' : status === 'running' ? '處理中' : '待命';
+      if(text) agents[key].body.textContent = text;
+    }
+    function resetAgents(){
+      setAgentState('draft','waiting','尚未收到摘要。若你希望這裡顯示初稿重點，請在 Webhook Response 加上 draft_summary 欄位。');
+      setAgentState('claude','waiting','尚未收到摘要。可在 Make 回傳 claude_review 欄位，顯示查核與風險提醒。');
+      setAgentState('gemini','waiting','尚未收到摘要。可回傳 gemini_judgment 欄位，顯示流量潛力與標題判斷。');
+      setAgentState('analyst','waiting','尚未收到摘要。可回傳 analyst_view 欄位，顯示市場邏輯與因果鏈檢查。');
+      setAgentState('retail','waiting','尚未收到摘要。可回傳 retail_view 欄位，顯示觀眾理解門檻與關注點。');
+    }
+    resetAgents();
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearError();
+
+      const webhook = document.getElementById('webhook').value.trim();
+      if(!webhook){
+        showError('請先貼上 Make Webhook URL。');
+        return;
+      }
+
+      const data = new URLSearchParams({
+        date: new Date().toISOString().slice(0,10),
+        topic: document.getElementById('topic').value.trim(),
+        angle: document.getElementById('angle').value.trim(),
+        links: document.getElementById('links').value.trim(),
+        platform: document.getElementById('platform').value,
+        videoType: document.getElementById('videoType').value,
+        tone: document.getElementById('tone').value,
+        factCheck: document.getElementById('factCheck').value,
+        notes: document.getElementById('notes').value.trim()
+      });
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'AI 編輯會議進行中...';
+
+      setOutput('AI 編輯會議進行中，請稍等。\n\n右欄將在 Make 跑完整個流程後顯示總編輯定稿。');
+      resetAgents();
+      setAgentState('draft','running','OpenAI 正在根據你的選題資料撰寫第一版腳本草稿。');
+      setAgentState('claude','running','Claude 準備接手進行查核、修辭調整與風險檢查。');
+      setAgentState('gemini','running','Gemini 準備評估流量潛力與觀眾關心的切角。');
+      setAgentState('analyst','running','財經分析師正在檢查是否具備市場主軸、數字與因果邏輯。');
+      setAgentState('retail','running','散戶投資人視角正在檢查是否好懂、是否有共感。');
+
+      try{
+        const res = await fetch(webhook,{
+          method:'POST',
+          headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+          body:data.toString()
+        });
+
+        const text = await res.text();
+        if(!res.ok){
+          throw new Error('Make 回應錯誤：' + res.status + ' ' + text);
+        }
+
+        let payload;
+        try{
+          payload = JSON.parse(text);
+        }catch{
+          payload = { final_script: text };
+        }
+
+        const finalText = payload.final_script || payload.result || payload.text || JSON.stringify(payload,null,2);
+        setOutput(finalText);
+
+        setAgentState('draft','done', payload.draft_summary || '流程已完成。若要在此處顯示初稿摘要，請在 Make Response 增加 draft_summary。');
+        setAgentState('claude','done', payload.claude_review || '流程已完成。若要在此處顯示 Claude 審稿摘要，請在 Make Response 增加 claude_review。');
+        setAgentState('gemini','done', payload.gemini_judgment || '流程已完成。若要在此處顯示流量判斷，請在 Make Response 增加 gemini_judgment。');
+        setAgentState('analyst','done', payload.analyst_view || '流程已完成。若要在此處顯示財經分析師意見，請在 Make Response 增加 analyst_view。');
+        setAgentState('retail','done', payload.retail_view || '流程已完成。若要在此處顯示散戶投資人意見，請在 Make Response 增加 retail_view。');
+      }catch(err){
+        showError(err && err.message ? err.message : '送出失敗，請檢查 Webhook URL、Make 是否 Run once、以及 Webhook Response 是否已設定。');
+        setOutput('尚未取得結果。');
+        resetAgents();
+      }finally{
+        submitBtn.disabled = false;
+        submitBtn.textContent = '啟動 AI 編輯會議';
+      }
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(output.textContent || '');
+      copyBtn.textContent = '已複製';
+      setTimeout(() => copyBtn.textContent = '複製全文', 1200);
+    });
+
+    clearBtn.addEventListener('click', () => {
+      clearError();
+      output.innerHTML = '<div class="placeholder"><strong>還沒有定稿</strong><span>左邊輸入題目並送出後，右邊會顯示總編輯最終版本。</span></div>';
+      resetAgents();
+    });
+  </script>
+</body>
+</html>
