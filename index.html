@@ -38,7 +38,6 @@
       min-height:100vh;
     }
     .page{max-width:1700px;margin:0 auto;padding:22px}
-
     .hero{position:relative;overflow:hidden;padding:26px 28px 22px;border-radius:28px;background:linear-gradient(135deg,rgba(255,255,255,.92),rgba(255,255,255,.72));border:1px solid rgba(255,255,255,.76);box-shadow:var(--shadow);backdrop-filter:blur(10px);margin-bottom:20px}
     .hero:before{content:"";position:absolute;right:-80px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(29,78,216,.16),transparent 64%);pointer-events:none}
     .hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap}
@@ -56,7 +55,6 @@
     .step i{width:17px;height:17px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-style:normal;font-size:10px;background:var(--brand-soft);color:var(--brand)}
     .step.video-step i{background:var(--video-soft);color:var(--video)}
     .step-arrow{color:#c0c9d8;font-size:11px}
-
     .main{display:grid;grid-template-columns:370px 360px 1fr;gap:18px;align-items:start}
     .card{border-radius:var(--radius);background:var(--panel-soft);border:1px solid rgba(255,255,255,.82);backdrop-filter:blur(12px);box-shadow:var(--shadow)}
     .panel{padding:20px}
@@ -79,7 +77,6 @@
     .btn-video{width:100%;color:#fff;background:linear-gradient(135deg,#0f766e,#0891b2);box-shadow:0 10px 22px rgba(15,118,110,.22)}
     .btn-sm{padding:8px 14px;font-size:13px;border-radius:10px}
     .input-note{margin-top:14px;padding:13px 15px;border-radius:16px;background:rgba(29,78,216,.05);border:1px dashed rgba(29,78,216,.18);color:#516074;font-size:12px;line-height:1.8}
-
     .summary-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
     .status-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:800;color:#344054}
     .pulse{width:8px;height:8px;border-radius:50%;background:#12b76a;box-shadow:0 0 0 0 rgba(18,183,106,.45);animation:pulse 1.9s infinite}
@@ -94,7 +91,6 @@
     .agent-badge.running{background:var(--warn-soft);color:var(--warn);border-color:#fedf89}
     .agent-badge.waiting{background:#f8fafc;color:#667085;border-color:#e4e7ec}
     .agent-body{min-height:70px;border-radius:12px;padding:10px 12px;background:#fbfcfe;border:1px dashed #e4e8f0;color:#475467;font-size:12px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
-
     .result-toolbar{display:flex;gap:8px;flex-wrap:wrap}
     .error{display:none;margin-bottom:14px;padding:13px 15px;border-radius:16px;background:var(--danger-soft);border:1px solid #fda29b;color:var(--danger);font-size:13px;line-height:1.7}
     .result-wrap{overflow:hidden;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(255,255,255,.94));min-height:300px}
@@ -105,14 +101,12 @@
     .result{padding:22px 24px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.95;font-size:16px;min-height:280px}
     .placeholder{min-height:280px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;color:#98a2b3;text-align:center;padding:28px}
     .placeholder strong{font-size:20px;color:#667085}
-
     .confirm-area{margin-top:16px;padding:16px;border-radius:18px;border:1px dashed rgba(4,120,87,.28);background:rgba(240,253,250,.6);display:none}
     .confirm-area.visible{display:block}
     .confirm-area h3{margin:0 0 10px;font-size:15px;color:#065f46}
     .confirm-script{width:100%;min-height:220px;padding:14px;border-radius:14px;border:1px solid rgba(4,120,87,.2);background:#fff;font-size:14px;line-height:1.8;color:var(--text);font-family:inherit;resize:vertical;outline:none;transition:.18s}
     .confirm-script:focus{border-color:rgba(4,120,87,.42);box-shadow:0 0 0 4px rgba(4,120,87,.08)}
     .confirm-note{margin-top:8px;font-size:12px;color:#047857;line-height:1.7}
-
     .video-section{margin-top:20px;display:none}
     .video-section.visible{display:block}
     .video-header{padding:18px 20px 14px;border-radius:24px 24px 0 0;background:linear-gradient(135deg,#0f766e,#0891b2);color:#fff}
@@ -141,7 +135,7 @@
     .scene-tags{display:flex;flex-wrap:wrap;gap:6px}
     .scene-tag{padding:3px 8px;border-radius:999px;background:rgba(8,145,178,.08);border:1px solid rgba(8,145,178,.16);color:#0891b2;font-size:11px;font-weight:700}
     .placeholder-video{min-height:140px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;color:#9ca3af;font-size:13px}
-
+    .heygen-section{margin-top:14px;border-radius:18px;overflow:hidden;border:1px solid rgba(15,118,110,.14)}
     @media(max-width:1380px){.main{grid-template-columns:1fr}.sticky{position:relative;top:0}.video-stages{grid-template-columns:1fr}}
     @media(max-width:820px){.page{padding:14px}.hero{padding:18px}.two{grid-template-columns:1fr}.hero-top,.head,.result-top{flex-direction:column;align-items:flex-start}.video-stages{grid-template-columns:1fr}}
   </style>
@@ -190,34 +184,28 @@
             <div class="sub">設定本次任務的題目、方向與條件。</div>
           </div>
         </div>
-
         <div class="field">
           <label class="required" for="webhook">腳本生成 Make Webhook URL</label>
           <input id="webhook" placeholder="貼上腳本生成流程的 Webhook URL" required />
           <div class="help">AI 編輯會議流程的入口，結果會顯示在右欄。</div>
         </div>
-
         <div class="field">
           <label for="videoWebhook">影片素材 Agent Webhook URL</label>
           <input id="videoWebhook" placeholder="貼上影片製作 Agent 的 Webhook URL（選填）" />
           <div class="help">確認腳本後送出，若未填則自動產出本地建議。</div>
         </div>
-
         <div class="field">
           <label class="required" for="topic">議題名稱</label>
           <input id="topic" placeholder="例如：AI 燒錢大戰誰勝出？科技巨頭財報總體檢" required />
         </div>
-
         <div class="field">
           <label class="required" for="angle">議題方向</label>
           <textarea id="angle" placeholder="市場事件 + 關鍵問題 + 你的判斷" required></textarea>
         </div>
-
         <div class="field">
           <label for="links">參考連結</label>
           <textarea id="links" placeholder="每行一個連結，或補充新聞、財報摘要"></textarea>
         </div>
-
         <div class="two">
           <div class="field">
             <label for="platform">目標平台</label>
@@ -241,7 +229,6 @@
             </select>
           </div>
         </div>
-
         <div class="two">
           <div class="field">
             <label for="tone">口吻</label>
@@ -263,14 +250,11 @@
             </select>
           </div>
         </div>
-
         <div class="field">
           <label for="notes">備註</label>
           <textarea id="notes" placeholder="例如：避免投資建議、前5秒要強" style="min-height:70px"></textarea>
         </div>
-
         <button class="btn btn-primary" id="submitBtn" type="submit">啟動 AI 編輯會議</button>
-
         <div class="input-note">
           <strong>全流程說明</strong><br>
           Step 1-7：腳本生成與 AI 多角色討論。<br>
@@ -287,7 +271,6 @@
           </div>
           <span class="status-pill"><span class="pulse"></span> 討論室待命中</span>
         </div>
-
         <div class="agent-list">
           <div class="agent">
             <div class="agent-top">
@@ -339,9 +322,7 @@
               <button class="btn btn-ghost btn-sm" type="button" id="clearBtn">清空</button>
             </div>
           </div>
-
           <div id="error" class="error"></div>
-
           <div class="result-wrap">
             <div class="result-top">
               <div class="result-meta">
@@ -356,7 +337,6 @@
               </div>
             </div>
           </div>
-
           <div class="confirm-area" id="confirmArea">
             <h3>📝 Step 8｜確認腳本</h3>
             <p style="font-size:13px;color:#047857;margin:0 0 10px">可在此直接修改 AI 定稿。確認無誤後，點下方按鈕啟動影片素材 Agent。</p>
@@ -375,7 +355,6 @@
             <h2>🎬 Step 9｜影片素材建議 &amp; 製作清單</h2>
             <p>AI Agent 根據確認腳本，產出分鏡建議、B-roll 搜尋關鍵字、文字疊加、縮圖概念、配樂方向與完整製作清單。</p>
           </div>
-
           <div class="video-stages" id="videoStages">
             <div class="video-stage-card">
               <div class="video-stage-head"><span class="vicon">🎥</span> 分鏡 &amp; 旁白建議</div>
@@ -390,7 +369,6 @@
               <div class="video-stage-body" id="captions-output"><div class="placeholder-video">等待腳本確認後生成…</div></div>
             </div>
           </div>
-
           <div class="video-production-wrap">
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:0">
               <div class="video-full-card" style="margin:0">
@@ -402,20 +380,36 @@
                 <div class="video-stage-body" id="bgm-output"><div class="placeholder-video">等待生成…</div></div>
               </div>
             </div>
-
             <div class="video-full-card" style="margin-top:12px">
               <div class="video-stage-head"><span class="vicon">🏷️</span> 標題選項（A / B / C）</div>
               <div class="video-stage-body" id="titles-output"><div class="placeholder-video">等待生成…</div></div>
             </div>
-
             <div class="video-checklist" id="checklistWrap" style="display:none">
               <div class="checklist-title">✅ 影片製作完成清單</div>
               <div id="checklist"></div>
             </div>
-
             <div class="video-toolbar">
               <button class="btn btn-ghost btn-sm" type="button" id="copyVideoBtn">複製影片製作建議</button>
               <button class="btn btn-ghost btn-sm" type="button" id="clearVideoBtn">清除影片區</button>
+            </div>
+          </div>
+
+          <div class="heygen-section">
+            <div class="video-stage-head" style="border-radius:18px 18px 0 0;padding:14px 18px"><span class="vicon">🎬</span> 直接生成 HeyGen 影片</div>
+            <div style="padding:16px;background:#fff;border:1px solid rgba(15,118,110,.14);border-top:none;border-radius:0 0 18px 18px">
+              <div class="field" style="margin-bottom:12px">
+                <label style="font-size:13px;font-weight:800;color:#253041;margin-bottom:6px;display:block">HeyGen API Key</label>
+                <input type="password" id="heygenKey" placeholder="貼上你的 HeyGen API Key（僅存在本機瀏覽器）" style="font-size:13px;border-radius:10px;padding:10px 12px" />
+                <div style="margin-top:5px;font-size:11px;color:#9ca3af">Key 不會上傳或儲存，僅用於本次瀏覽器呼叫。</div>
+              </div>
+              <button class="btn btn-video" id="heygenBtn" type="button" style="font-size:13px;padding:10px 16px;width:auto">
+                🎬 送出腳本，生成 HeyGen 影片
+              </button>
+              <div id="heygenStatus" style="margin-top:12px;font-size:13px;color:#0f766e;display:none"></div>
+              <div id="heygenResult" style="margin-top:12px;display:none">
+                <video id="heygenVideo" controls style="width:100%;border-radius:14px;max-height:400px"></video>
+                <a id="heygenLink" href="#" target="_blank" style="display:block;margin-top:8px;font-size:13px;color:#0f766e;font-weight:700">📥 下載影片</a>
+              </div>
             </div>
           </div>
         </div>
@@ -742,6 +736,82 @@
 
     document.getElementById('clearVideoBtn').addEventListener('click', () => {
       videoSection.classList.remove('visible');
+    });
+
+    document.getElementById('heygenBtn').addEventListener('click', async () => {
+      const key = document.getElementById('heygenKey').value.trim();
+      const script = document.getElementById('confirmScript').value.trim();
+      if(!key){ alert('請先填入 HeyGen API Key。'); return; }
+      if(!script){ alert('請先確認腳本內容。'); return; }
+
+      const btn = document.getElementById('heygenBtn');
+      const status = document.getElementById('heygenStatus');
+      const result = document.getElementById('heygenResult');
+
+      btn.disabled = true;
+      btn.textContent = '送出中…';
+      status.style.display = 'block';
+      status.textContent = '⏳ 正在送出腳本給 HeyGen…';
+      result.style.display = 'none';
+
+      try {
+        const genRes = await fetch('https://api.heygen.com/v2/video/generate', {
+          method: 'POST',
+          headers: { 'X-Api-Key': key, 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            video_inputs: [{
+              character: {
+                type: 'avatar',
+                avatar_id: '63fdc3710c9a4ddab0d12007bd6837a8',
+                avatar_style: 'normal'
+              },
+              voice: {
+                type: 'text',
+                input_text: script,
+                voice_id: '9fa241c19d434c1fa6418de59bd4707e',
+                speed: 1.0
+              }
+            }],
+            caption: true,
+            dimension: { width: 1080, height: 1920 }
+          })
+        });
+        const genData = await genRes.json();
+        if(!genRes.ok || !genData.data?.video_id) throw new Error(genData.message || '影片生成請求失敗');
+
+        const videoId = genData.data.video_id;
+        status.textContent = `✅ 影片生成中，Video ID：${videoId}，請耐心等待（約 2-3 分鐘）…`;
+
+        let videoUrl = null;
+        for(let i = 0; i < 30; i++) {
+          await new Promise(r => setTimeout(r, 10000));
+          const checkRes = await fetch(`https://api.heygen.com/v1/video_status.get?video_id=${videoId}`, {
+            headers: { 'X-Api-Key': key }
+          });
+          const checkData = await checkRes.json();
+          const st = checkData.data?.status;
+          status.textContent = `⏳ 影片處理中（${st}）… 已等待 ${(i+1)*10} 秒`;
+          if(st === 'completed') {
+            videoUrl = checkData.data.video_url;
+            break;
+          }
+          if(st === 'failed') throw new Error('HeyGen 影片生成失敗，請檢查腳本內容或帳號額度。');
+        }
+
+        if(!videoUrl) throw new Error('逾時：影片尚未完成，請稍後到 HeyGen 後台查看。');
+
+        status.textContent = '🎉 影片已生成完成！';
+        result.style.display = 'block';
+        document.getElementById('heygenVideo').src = videoUrl;
+        document.getElementById('heygenLink').href = videoUrl;
+        document.getElementById('heygenLink').textContent = '📥 下載影片';
+
+      } catch(err) {
+        status.textContent = '❌ ' + (err?.message || '發生錯誤，請確認 API Key 與帳號額度。');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '🎬 送出腳本，生成 HeyGen 影片';
+      }
     });
   </script>
 </body>
