@@ -405,6 +405,15 @@
             <div class="video-stage-head" style="border-radius:18px 18px 0 0;padding:14px 18px"><span class="vicon">🎬</span> 直接生成 HeyGen 影片</div>
             <div style="padding:16px;background:#fff;border:1px solid rgba(15,118,110,.14);border-top:none;border-radius:0 0 18px 18px">
               <div class="field" style="margin-bottom:12px">
+                <label style="font-size:13px;font-weight:800;color:#253041;margin-bottom:6px;display:block">口播稿（只放要唸出來的文字）</label>
+                <textarea id="heygenScript" placeholder="請貼上純旁白文字。不要包含分析、標題選項、Hook 說明等內容，否則影片會過長。" style="min-height:160px;font-size:13px;border-radius:10px;padding:10px 12px;line-height:1.8"></textarea>
+                <div style="margin-top:5px;font-size:12px;color:#6b7280">
+                  <span id="heygenCharCount">0 字</span> ｜ 預估影片長度：<span id="heygenDuration">0 秒</span>
+                  <span id="heygenDurationWarn" style="color:#b42318;font-weight:700"></span>
+                </div>
+                <div style="margin-top:4px;font-size:11px;color:#9ca3af">參考：60 秒 ≈ 280 字內／30 秒 ≈ 140 字內／90 秒 ≈ 420 字內（中文口播每秒約 4.7 字）</div>
+              </div>
+              <div class="field" style="margin-bottom:12px">
                 <label style="font-size:13px;font-weight:800;color:#253041;margin-bottom:6px;display:block">HeyGen API Key</label>
                 <input type="password" id="heygenKey" placeholder="貼上你的 HeyGen API Key（僅存在本機瀏覽器）" style="font-size:13px;border-radius:10px;padding:10px 12px" />
                 <div style="margin-top:5px;font-size:11px;color:#9ca3af">Key 不會上傳或儲存，僅用於本次瀏覽器呼叫。</div>
@@ -745,11 +754,27 @@
       videoSection.classList.remove('visible');
     });
 
+    // 口播稿字數與時長預估
+    const heygenScriptEl = document.getElementById('heygenScript');
+    heygenScriptEl.addEventListener('input', () => {
+      const len = heygenScriptEl.value.replace(/\s/g,'').length;
+      const sec = Math.round(len / 4.7);
+      document.getElementById('heygenCharCount').textContent = len + ' 字';
+      document.getElementById('heygenDuration').textContent = sec + ' 秒';
+      const target = parseInt(document.getElementById('duration').value) || 60;
+      document.getElementById('heygenDurationWarn').textContent =
+        sec > target * 1.2 ? `（超過目標 ${target} 秒，建議刪減）` : '';
+    });
+
     document.getElementById('heygenBtn').addEventListener('click', async () => {
       const key = document.getElementById('heygenKey').value.trim();
-      const script = document.getElementById('confirmScript').value.trim();
+      const script = document.getElementById('heygenScript').value.trim();
       if(!key){ alert('請先填入 HeyGen API Key。'); return; }
-      if(!script){ alert('請先確認腳本內容。'); return; }
+      if(!script){ alert('請先在「口播稿」欄位貼上要唸的旁白文字。'); return; }
+      const scriptLen = script.replace(/\s/g,'').length;
+      const estSec = Math.round(scriptLen / 4.7);
+      const targetSec = parseInt(document.getElementById('duration').value) || 60;
+      if(estSec > targetSec * 1.5 && !confirm(`口播稿約 ${scriptLen} 字，預估影片長度 ${estSec} 秒，明顯超過目標 ${targetSec} 秒。確定要繼續嗎？`)) return;
 
       const btn = document.getElementById('heygenBtn');
       const status = document.getElementById('heygenStatus');
